@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fdebf3;
+  --card: #fff;
+  --accent: #F4A7C5;
+  --accent-strong: #A26EA1;
+}
+
+body { background: linear-gradient(135deg, #fdebf3, #f8c8dc); min-height: 100vh; }
+.btn { @apply rounded-2xl px-5 py-2 font-medium shadow-soft; background: var(--accent); color: white; }
+.btn:hover { filter: brightness(0.95); }
+.card { @apply bg-white rounded-2xl shadow-soft p-6; }
+.input { @apply w-full rounded-xl border border-pink-200 px-4 py-2 outline-none focus:ring-2 focus:ring-pink-300; }
+.link { @apply text-pink-600 hover:underline; }

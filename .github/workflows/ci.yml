@@ -1,0 +1,40 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: shoplite_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm -r build
+      - run: pnpm -r lint
+      - run: pnpm --filter ./apps/backend prisma:generate
+      - run: pnpm --filter ./apps/backend prisma:migrate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shoplite_test
+      - run: pnpm -r test:coverage
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: |
+            apps/**/coverage
+            packages/**/coverage

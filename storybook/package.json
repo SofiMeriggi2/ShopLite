@@ -1,0 +1,8 @@
+{
+  "name": "@shoplite/storybook",
+  "private": true,
+  "devDependencies": {
+    "@storybook/react-vite": "^8.3.5",
+    "storybook": "^8.3.5"
+  }
+}

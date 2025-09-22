@@ -1,0 +1,40 @@
+{
+  "name": "shoplite",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build",
+    "dev": "yarn workspaces run dev",
+    "lint": "yarn workspaces run lint",
+    "test": "yarn workspaces run test",
+    "test:coverage": "yarn workspaces run test:coverage",
+    "e2e": "yarn workspace @shoplite/frontend playwright test",
+    "format": "prettier -w .",
+    "prepare": "husky install",
+    "dev:backend": "yarn workspace @shoplite/backend dev",
+    "dev:frontend": "yarn workspace @shoplite/frontend dev",
+    "prisma:generate": "yarn workspace @shoplite/backend prisma generate",
+    "prisma:migrate": "yarn workspace @shoplite/backend prisma migrate dev --name init",
+    "prisma:seed": "yarn workspace @shoplite/backend prisma db seed"
+  },
+  "devDependencies": {
+    "eslint": "^9.11.0",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.3.3",
+    "turbo": "^2.0.6"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,md,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "packageManager": "yarn@4.10.2",
+  "dependencies": {
+    "@prisma/client": "^6.16.2"
+  }
+}
