@@ -9,8 +9,8 @@ export declare class AuthController {
     }): Promise<{
         message: string;
         user: {
-            id: string;
-            email: string;
+            id: any;
+            email: any;
         };
     }>;
     login(body: {
@@ -19,9 +19,9 @@ export declare class AuthController {
     }): Promise<{
         token: string;
         user: {
-            id: string;
-            email: string;
-            name: string;
+            id: any;
+            email: any;
+            name: any;
         };
     }>;
 }
