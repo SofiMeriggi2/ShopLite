@@ -1,12 +1,23 @@
 import { AddToCartButton } from "../../../components/AddToCartButton";
+import type { Product } from "@shoplite/shared";
+import { notFound } from "next/navigation";
 
 async function getProduct(slug: string) {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/catalog/${slug}`;
   const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) return null;
+  if (res.status === 404) {
+    return null;
+  }
+
+  if (!res.ok) {
+    console.error("Error cargando producto", res.status, await res.text());
+    return null;
+  }
+
   try {
-    return await res.json();
-  } catch {
+    return (await res.json()) as Product;
+  } catch (error) {
+    console.error("Respuesta inválida del producto", error);
     return null;
   }
 }
@@ -19,12 +30,7 @@ export default async function ProductPage({
   const product = await getProduct(params.slug);
 
   if (!product) {
-    return (
-      <div className="text-center py-24 text-pink-900">
-        <h2 className="text-2xl font-heading font-bold">Producto no encontrado</h2>
-        <p className="mt-2 text-pink-700/80">Volvé al catálogo y probá con otro.</p>
-      </div>
-    );
+    notFound();
   }
 
   return (
