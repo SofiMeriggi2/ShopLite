@@ -21,14 +21,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "yarn"
-          cache-dependency-path: |
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Use Yarn 4
+        run: corepack prepare yarn@4.10.2 --activate
+      - name: Locate Yarn cache
+        id: yarn-cache
+        run: echo "dir=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+      - name: Cache Yarn installation
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ steps.yarn-cache.outputs.dir }}
             .yarn/install-state.gz
-            yarn.lock
-            apps/**/package.json
-            packages/**/package.json
-      - run: corepack enable
-      - run: corepack prepare yarn@4.10.2 --activate
+          key: yarn-cache-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-cache-${{ runner.os }}-
       - run: yarn install --immutable
       - run: yarn build
       - run: yarn lint
