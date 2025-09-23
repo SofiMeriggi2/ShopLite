@@ -1,14 +1,21 @@
 import Link from "next/link";
 import { AddToCartButton } from "../../components/AddToCartButton";
+import type { Product } from "@shoplite/shared";
 
 async function getProducts() {
   const url = `${process.env.NEXT_PUBLIC_API_URL}/api/catalog`;
   const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {
     console.error("Error cargando productos", res.status, await res.text());
-    return [];
+    return [] as Product[];
   }
-  return res.json();
+
+  try {
+    return (await res.json()) as Product[];
+  } catch (error) {
+    console.error("Respuesta inválida del catálogo", error);
+    return [] as Product[];
+  }
 }
 
 export default async function CatalogPage() {
@@ -26,7 +33,7 @@ export default async function CatalogPage() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-6">
-      {products.map((p: any) => (
+      {products.map((p) => (
         <div
           key={p.id}
           className="bg-white rounded-lg shadow-soft overflow-hidden hover:shadow-lg transition"

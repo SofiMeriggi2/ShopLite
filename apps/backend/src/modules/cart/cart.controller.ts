@@ -73,6 +73,20 @@ export class CartController {
     return { message: '🗑️ Producto eliminado del carrito' };
   }
 
+  @Delete('clear')
+  async clearCart(@Req() req) {
+    const userId = req.user.sub;
+
+    const cart = await this.prisma.cart.findUnique({ where: { userId } });
+    if (!cart) {
+      return { message: 'El carrito ya está vacío' };
+    }
+
+    await this.prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+
+    return { message: '🧹 Carrito vaciado' };
+  }
+
   // 👉 Checkout
   @Post('checkout')
   async checkout(@Req() req) {
