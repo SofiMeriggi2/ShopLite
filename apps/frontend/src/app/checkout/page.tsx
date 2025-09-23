@@ -2,10 +2,12 @@
 
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { useCart } from "../context/CartContext";
 
 export default function CheckoutPage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const router = useRouter();
+  const { clearCart } = useCart();
 
   const handleCheckout = async () => {
     if (!user) {
@@ -14,13 +16,17 @@ export default function CheckoutPage() {
       return;
     }
 
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + "/cart/checkout", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/cart/checkout`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     });
 
     if (res.ok) {
       alert("Compra realizada con éxito 🛍️");
+      clearCart();
       router.push("/catalog");
     } else {
       alert("Error en el checkout");

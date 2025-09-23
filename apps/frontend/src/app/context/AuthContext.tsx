@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 type User = {
   id: string;
@@ -19,6 +19,22 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const storedUser = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+
+    if (storedToken && storedUser) {
+      try {
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser) as User);
+      } catch (error) {
+        console.warn("No se pudo restaurar la sesión", error);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
 
   const login = (token: string, user: User) => {
     setToken(token);

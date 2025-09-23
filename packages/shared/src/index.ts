@@ -9,9 +9,13 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 
 export const ProductSchema = z.object({
   id: z.string(),
+  slug: z.string(),
   title: z.string(),
-  description: z.string().optional(),
+  description: z.string(),
   priceCents: z.number().int().nonnegative(),
+  image: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export type Product = z.infer<typeof ProductSchema>;

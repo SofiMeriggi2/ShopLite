@@ -35,13 +35,13 @@ export class AuthController {
     const valid = await bcrypt.compare(body.password, user.password);
     if (!valid) throw new UnauthorizedException('Credenciales inválidas');
 
-    const token = jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET!, {
+    const token = jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET ?? 'secretKey', {
       expiresIn: '7d',
     });
 
     return {
-    token,
-    user: { id: user.id, email: user.email, name: user.name },
-  };
+      token,
+      user: { id: user.id, email: user.email, name: user.name },
+    };
   }
 }
