@@ -6,19 +6,19 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build",
-    "dev": "yarn workspaces run dev",
-    "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test",
-    "test:coverage": "yarn workspaces run test:coverage",
+    "build": "yarn workspaces foreach --all --topological-dev run build",
+    "dev": "yarn workspaces foreach --all --parallel run dev",
+    "lint": "yarn workspaces foreach --all --topological-dev run lint",
+    "test": "yarn workspaces foreach --all run test",
+    "test:coverage": "yarn workspaces foreach --all run test:coverage",
     "e2e": "yarn workspace @shoplite/frontend playwright test",
     "format": "prettier -w .",
     "prepare": "husky install",
     "dev:backend": "yarn workspace @shoplite/backend dev",
     "dev:frontend": "yarn workspace @shoplite/frontend dev",
-    "prisma:generate": "yarn workspace @shoplite/backend prisma generate",
-    "prisma:migrate": "yarn workspace @shoplite/backend prisma migrate dev --name init",
-    "prisma:seed": "yarn workspace @shoplite/backend prisma db seed"
+    "prisma:generate": "yarn workspace @shoplite/backend prisma:generate",
+    "prisma:migrate": "yarn workspace @shoplite/backend prisma:migrate",
+    "prisma:seed": "yarn workspace @shoplite/backend seed"
   },
   "devDependencies": {
     "@anatine/zod-openapi": "^2.2.8",
@@ -34,7 +34,7 @@
   "lint-staged": {
     "*.{js,ts,tsx,md,json}": [
       "prettier --write",
-      "eslint --fix"
+      "ESLINT_USE_FLAT_CONFIG=false eslint --fix"
     ]
   },
   "packageManager": "yarn@4.10.2",

@@ -8,19 +8,19 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main.js",
-    "lint": "eslint .",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint .",
+    "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:reset": "prisma migrate reset -f",
     "prisma:studio": "prisma studio",
     "postinstall": "prisma generate",
     "start": "nest start",
-    "migrate": "prisma migrate dev --schema apps/backend/prisma/schema.prisma",
-    "generate": "prisma generate --schema apps/backend/prisma/schema.prisma",
-    "studio": "prisma studio --schema apps/backend/prisma/schema.prisma",
-    "seed": "ts-node apps/backend/prisma/seed.ts"
+    "migrate": "prisma migrate dev --schema prisma/schema.prisma",
+    "generate": "prisma generate --schema prisma/schema.prisma",
+    "studio": "prisma studio --schema prisma/schema.prisma",
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.0",
@@ -61,6 +61,6 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts",
-    "schema": "apps/backend/prisma/schema.prisma"
+    "schema": "prisma/schema.prisma"
   }
 }
