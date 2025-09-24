@@ -6,11 +6,11 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build",
-    "dev": "yarn workspaces run dev",
-    "lint": "yarn workspaces run lint",
-    "test": "yarn workspaces run test",
-    "test:coverage": "yarn workspaces run test:coverage",
+    "build": "yarn workspaces foreach --all --topological-dev run build",
+    "dev": "yarn workspaces foreach --all --parallel run dev",
+    "lint": "yarn workspaces foreach --all --topological-dev run lint",
+    "test": "yarn workspaces foreach --all run test",
+    "test:coverage": "yarn workspaces foreach --all run test:coverage",
     "e2e": "yarn workspace @shoplite/frontend playwright test",
     "format": "prettier -w .",
     "prepare": "husky install",
