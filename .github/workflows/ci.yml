@@ -18,20 +18,21 @@ jobs:
         ports: ["6379:6379"]
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with: { version: 9 }
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
-      - run: pnpm i --frozen-lockfile
-      - run: pnpm -r build
-      - run: pnpm -r lint
-      - run: pnpm --filter ./apps/backend prisma:generate
-      - run: pnpm --filter ./apps/backend prisma:migrate
+          cache: yarn
+          cache-dependency-path: yarn.lock
+      - run: corepack enable
+      - run: corepack prepare $(node -p "require('./package.json').packageManager") --activate
+      - run: yarn install --immutable
+      - run: yarn build
+      - run: yarn lint
+      - run: yarn workspace @shoplite/backend prisma:generate
+      - run: yarn workspace @shoplite/backend prisma:migrate
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shoplite_test
-      - run: pnpm -r test:coverage
+      - run: yarn test:coverage
       - uses: actions/upload-artifact@v4
         with:
           name: coverage
