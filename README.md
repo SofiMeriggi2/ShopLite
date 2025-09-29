@@ -1,41 +1,71 @@
-# ShopLite — NestJS + Next.js 15 Monorepo
+# ShopLite
 
-Monorepo listo para correr: API en NestJS + Prisma (PostgreSQL), Redis para cache/colas (BullMQ), 
-Front en Next.js 15 (App Router + RSC), TanStack Query, formularios con Zod, testing (Jest/Vitest/Playwright), 
-Storybook, CI con GitHub Actions, SAST (CodeQL) y secret scanning básico.
+A modern e-commerce platform built with JavaScript and TypeScript.
 
-## Rápido inicio (dev)
+## Features
+
+- Monorepo structure (pnpm, TurboRepo)
+- Modern API (NestJS, PostgreSQL, Redis)
+- Frontend & Backend separation
+- Docker and docker-compose for dev/prod
+- CI/CD via GitHub Actions
+- Prettier & ESLint for code quality
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-# Requisitos: pnpm, Docker, Node 20, OpenSSL
-pnpm i
-pnpm prepare
-
-# Infra (db/redis/mail)
-docker compose up -d db redis mailhog
-
-# Backend
-pnpm --filter ./apps/backend prisma:generate
-pnpm --filter ./apps/backend prisma:migrate
-pnpm --filter ./apps/backend seed
-pnpm --filter ./apps/backend dev
-
-# Frontend (en otra terminal)
-pnpm --filter ./apps/frontend dev
-
-# URLs
-# Web: http://localhost:3000
-# API docs: http://localhost:3001/docs
-# Mailhog: http://localhost:8025
+git clone https://github.com/SofiMeriggi2/ShopLite.git
+cd ShopLite
 ```
 
-## Scripts útiles (root)
+### 2. Install dependencies
 
-- `pnpm -r build` compila todo
-- `pnpm -r lint` lint en todos los paquetes
-- `pnpm -r test` tests unitarios
-- `pnpm -r test:coverage` cobertura ≥ 90%
-- `pnpm --filter ./apps/frontend e2e` e2e web con Playwright
+```bash
+corepack enable
+yarn install
+```
 
-## Estética
-Login y UI con paleta *baby pink / pastel* suave, accesible (contrastes AA para texto importante).
+### 3. Environment setup
+
+Copy the example env file and fill your values:
+```bash
+cp .env.example .env
+```
+
+### 4. Run with Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+### 5. Develop
+
+- Backend: `yarn workspace @shoplite/backend dev`
+- Frontend: `yarn workspace @shoplite/frontend dev`
+
+### 6. Test and Lint
+
+```bash
+yarn lint
+yarn test
+```
+
+## CI/CD
+
+This repo uses GitHub Actions (`.github/workflows/ci.yml`) for:
+- Linting
+- Building
+- Testing
+- Security audit
+
+## Contributing
+
+Open an issue or PR. Please follow code style and use the pre-commit hooks.
+
+---
+
+## License
+
+MIT
