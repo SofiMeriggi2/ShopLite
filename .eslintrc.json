@@ -1,13 +1,1 @@
-{
-  "root": true,
-  "env": {
-    "node": true,
-    "es2022": true
-  },
-  "extends": [],
-  "parserOptions": {
-    "ecmaVersion": 2022,
-    "sourceType": "module"
-  },
-  "rules": {}
-}
+{"root":true,"env":{"node":true,"es2022":true},"extends":["eslint:recommended","plugin:@typescript-eslint/recommended","plugin:prettier/recommended"],"parser":"@typescript-eslint/parser","parserOptions":{"ecmaVersion":2022,"sourceType":"module"},"plugins":["@typescript-eslint"],"rules":{"no-unused-vars":"warn","no-console":"warn"},"ignorePatterns":["node_modules/","dist/","coverage/","storybook/"]}
