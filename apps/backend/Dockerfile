@@ -1,8 +1,14 @@
 FROM node:20-alpine
 WORKDIR /app
-COPY package.json pnpm-lock.yaml* ./
-RUN corepack enable && corepack prepare pnpm@9.7.0 --activate
-RUN pnpm i --frozen-lockfile || true
+
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+RUN corepack enable && corepack prepare yarn@4.10.2 --activate
+RUN yarn install --immutable
+
 COPY . .
-RUN pnpm build
-CMD ["node", "dist/main.js"]
+
+RUN yarn workspace @shoplite/backend build
+
+CMD ["node", "apps/backend/dist/main.js"]

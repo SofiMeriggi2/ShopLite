@@ -7,21 +7,22 @@ Storybook, CI con GitHub Actions, SAST (CodeQL) y secret scanning básico.
 ## Rápido inicio (dev)
 
 ```bash
-# Requisitos: pnpm, Docker, Node 20, OpenSSL
-pnpm i
-pnpm prepare
+# Requisitos: Corepack (yarn@4.10.2), Docker, Node 20, OpenSSL
+corepack prepare yarn@4.10.2 --activate
+yarn install --immutable
+yarn prepare
 
 # Infra (db/redis/mail)
 docker compose up -d db redis mailhog
 
 # Backend
-pnpm --filter ./apps/backend prisma:generate
-pnpm --filter ./apps/backend prisma:migrate
-pnpm --filter ./apps/backend seed
-pnpm --filter ./apps/backend dev
+yarn workspace @shoplite/backend prisma:generate
+yarn workspace @shoplite/backend prisma:migrate
+yarn workspace @shoplite/backend prisma:seed
+yarn workspace @shoplite/backend dev
 
 # Frontend (en otra terminal)
-pnpm --filter ./apps/frontend dev
+yarn workspace @shoplite/frontend dev
 
 # URLs
 # Web: http://localhost:3000
@@ -31,11 +32,11 @@ pnpm --filter ./apps/frontend dev
 
 ## Scripts útiles (root)
 
-- `pnpm -r build` compila todo
-- `pnpm -r lint` lint en todos los paquetes
-- `pnpm -r test` tests unitarios
-- `pnpm -r test:coverage` cobertura ≥ 90%
-- `pnpm --filter ./apps/frontend e2e` e2e web con Playwright
+- `yarn build` compila todo
+- `yarn lint` lint en todos los paquetes
+- `yarn test` tests unitarios
+- `yarn test:coverage` cobertura ≥ 90%
+- `yarn e2e` e2e web con Playwright
 
 ## Estética
 Login y UI con paleta *baby pink / pastel* suave, accesible (contrastes AA para texto importante).
